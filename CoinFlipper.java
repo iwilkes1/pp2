@@ -12,8 +12,8 @@ public class CoinFlipper implements Runnable {
 	private static int threads; 
 	private int numFlips;
 	
-	private static int heads;
-	private static int tails;
+	private volatile static int heads;
+	private volatile static int tails;
 	
 	private Random flipper;
 	
@@ -37,6 +37,7 @@ public class CoinFlipper implements Runnable {
 		
 		if (args.length != 2) {
 			System.out.println("Usage: <threads> <coin flips>");
+			return;
 		}
 		threads = Integer.parseInt(args[0]);
 		flips = Integer.parseInt(args[1]);
@@ -60,6 +61,7 @@ public class CoinFlipper implements Runnable {
 				threadsToRun[i].join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				return;
 			}
 		}
 		
@@ -72,9 +74,9 @@ public class CoinFlipper implements Runnable {
 	public void run() {
 		for (int i = 0; i < this.numFlips; i++) {
 			if (flipper.nextInt(2) == 1) {
-				CoinFlipper.heads++;
+				synchronized(CoinFlipper.class) {CoinFlipper.heads++;}
 			} else {
-				CoinFlipper.tails++;
+				synchronized(CoinFlipper.class) {CoinFlipper.tails++;}
 			}
 		}
 	}
