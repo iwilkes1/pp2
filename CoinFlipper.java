@@ -11,12 +11,12 @@ public class CoinFlipper implements Runnable {
 	private static int flips;
 	private static int threads; 
 	private int numFlips;
-	
-	private volatile static int heads;
-	private volatile static int tails;
-	
+
+	private volatile int heads;
+	private volatile int tails;
+
 	private Random flipper;
-	
+
 	/**
 	 * Constructor for the coin flipping class
 	 * @param id the thread id.
@@ -26,15 +26,18 @@ public class CoinFlipper implements Runnable {
 		this.thread_id = id;
 		this.numFlips = numFlips;
 		this.flipper = new Random();
+
+		this.heads = 0;
+		this.tails = 0;
 	}
-	
+
 	/**
 	 * Main Method to flip coins.
 	 * @param args The first argument is the number of threads to use, the second is
 	 * the number of coin flips to execute.
 	 */
 	public static void main(String[] args) {
-		
+
 		if (args.length != 2) {
 			System.out.println("Usage: <threads> <coin flips>");
 			return;
@@ -42,45 +45,48 @@ public class CoinFlipper implements Runnable {
 		threads = Integer.parseInt(args[0]);
 		flips = Integer.parseInt(args[1]);
 
-		CoinFlipper.heads = 0;
-		CoinFlipper.tails = 0;
-		
+
 		Thread[] threadsToRun = new Thread[threads];
+		CoinFlipper[] individualFlippers = new CoinFlipper[threads];
 
 		long startTime = System.currentTimeMillis();
-		
+		int totalHeads = 0;
+		int totalTails = 0;
 		// Start Threads
 		for (int i = 0; i < threads; i++) {
-			threadsToRun[i] = new Thread(new CoinFlipper(i, flips/threads));
+			individualFlippers[i] = new CoinFlipper(i, flips/threads);
+			threadsToRun[i] = new Thread(individualFlippers[i]);
 			threadsToRun[i].start();
 		}
-		
+
 		// wait for threads to finish
 		for (int i = 0; i < threads; i++) {
 			try {
 				threadsToRun[i].join();
+				totalHeads += individualFlippers[i].heads;
+				totalTails += individualFlippers[i].tails;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return;
 			}
 		}
-		
+
 		// print results
 		long endTime = System.currentTimeMillis();
-		System.out.println(CoinFlipper.heads + "," + flips + "," + (endTime - startTime) + "," + threads);
-		/*
-		System.out.println("Heads: " + CoinFlipper.heads 
-			+ " in " + flips + " flips" + 
-			"\nTime taken: " + (endTime - startTime) + "ms");
-		*/
+		System.out.println("Heads: " + totalHeads + ", Tails: " + totalTails + 
+				"\nTime taken: " + (endTime - startTime) + "ms");
 	}
 	@Override
 	public void run() {
 		for (int i = 0; i < this.numFlips; i++) {
 			if (flipper.nextInt(2) == 1) {
-				synchronized(CoinFlipper.class) {CoinFlipper.heads++;}
+
+				heads++;
+
 			} else {
-				synchronized(CoinFlipper.class) {CoinFlipper.tails++;}
+
+				tails++;
+
 			}
 		}
 	}
