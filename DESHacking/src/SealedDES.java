@@ -228,7 +228,8 @@ class SealedDES implements Runnable
 
 		// Mask off the high bits so we get a short key
 		key = key & maximumKey;
-		System.out.println("Secret key: " + key);
+		//TODO add print statements back in
+		//System.out.println("Secret key: " + key);
 
 		// Get and store the current time -- for timing
 		long runstart;
@@ -256,7 +257,9 @@ class SealedDES implements Runnable
 		// Output search time
 		long elapsed = System.currentTimeMillis() - runstart;
 		long keys = maximumKey + 1;
-		System.out.println ( "Completed search of " + keys + " keys at " + elapsed + " milliseconds.");
+		//TODO add back useful print data
+		System.out.println(keys + "," + elapsed);
+		//System.out.println ( "Completed search of " + keys + " keys at " + elapsed + " milliseconds.");
 	}
 
 	@Override
@@ -268,14 +271,13 @@ class SealedDES implements Runnable
 			// Set the key and decipher the object
 			deccipher.setKey ( i );
 			String decryptstr = deccipher.decrypt ( sldObj );
-
 			// Does the object contain the known plaintext
 			if (( decryptstr != null ) && ( decryptstr.indexOf ( "Hopkins" ) != -1 ))
 			{
 				//  Remote printlns if running for time.
-				System.out.println("Thread: " + this.threadID + " found decrypt key: " + i + " producing message: " + decryptstr);
+				//System.out.println("Thread: " + this.threadID + " found decrypt key: " + i + " producing message: " + decryptstr);
 			}
-			
+			/*
 			// Update progress every once in awhile.
 			//  Remote printlns if running for time.
 			if ( i % 100000 == 0 )
@@ -283,6 +285,7 @@ class SealedDES implements Runnable
 				long elapsed = System.currentTimeMillis() - runStart;
 				System.out.println ( "Thread: " + this.threadID + " searched key number " + i + " at " + elapsed + " milliseconds.");
 			}
+			*/
 		}
 
 	}
