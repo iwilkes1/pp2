@@ -258,7 +258,7 @@ class SealedDES implements Runnable
 		long elapsed = System.currentTimeMillis() - runstart;
 		long keys = maximumKey + 1;
 		//TODO add back useful print data
-		System.out.println(keys + "," + elapsed + "," + numThreads);
+		System.out.println(keybits + "," + elapsed + "," + numThreads);
 		//System.out.println ( "Completed search of " + keys + " keys at " + elapsed + " milliseconds.");
 	}
 
