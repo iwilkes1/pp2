@@ -38,43 +38,48 @@ public class CoinFlipper implements Runnable {
 	 */
 	public static void main(String[] args) {
 
-		if (args.length != 2) {
-			System.out.println("Usage: <threads> <coin flips>");
+		if (args.length != 3) {
+			System.out.println("Usage: <threads> <coin flips> <iterations>");
 			return;
 		}
 		threads = Integer.parseInt(args[0]);
 		flips = Integer.parseInt(args[1]);
-
-
+		int numIterations = Integer.parseInt(args[2]);
+		
 		Thread[] threadsToRun = new Thread[threads];
 		CoinFlipper[] individualFlippers = new CoinFlipper[threads];
 
-		long startTime = System.currentTimeMillis();
 		int totalHeads = 0;
-		int totalTails = 0;
-		// Start Threads
-		for (int i = 0; i < threads; i++) {
-			individualFlippers[i] = new CoinFlipper(i, flips/threads);
-			threadsToRun[i] = new Thread(individualFlippers[i]);
-			threadsToRun[i].start();
-		}
+		long startTime = System.currentTimeMillis();
 
-		// wait for threads to finish
-		for (int i = 0; i < threads; i++) {
-			try {
-				threadsToRun[i].join();
-				totalHeads += individualFlippers[i].heads;
-				totalTails += individualFlippers[i].tails;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				return;
+		for (int iterations = 0; iterations < numIterations; iterations++) {
+			totalHeads = 0;
+
+			// Start Threads
+			for (int i = 0; i < threads; i++) {
+				individualFlippers[i] = new CoinFlipper(i, flips/threads);
+				threadsToRun[i] = new Thread(individualFlippers[i]);
+				threadsToRun[i].start();
+			}
+
+			// wait for threads to finish
+			for (int i = 0; i < threads; i++) {
+				try {
+					threadsToRun[i].join();
+					totalHeads += individualFlippers[i].heads;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					return;
+				}
 			}
 		}
-
 		// print results
 		long endTime = System.currentTimeMillis();
-		System.out.println("Heads: " + totalHeads + ", Tails: " + totalTails + 
+		System.out.println((endTime - startTime) + "," + threads + "," + numIterations);
+		/* TODO add this back in 
+ 		System.out.println("Heads: " + totalHeads  + 
 				"\nTime taken: " + (endTime - startTime) + "ms");
+		 */
 	}
 	@Override
 	public void run() {
