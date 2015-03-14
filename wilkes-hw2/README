@@ -1,0 +1,38 @@
+iwilkes1
+Ian Wilkes
+ianm.wilkes@gmail.com
+README for parallel programming assignment 2
+
+To make all the files, type: make
+
+Part 1: CoinFlipper.java
+To run this code, first compile then run with:
+java CoinFlipper #threads #coinflips #iterations
+
+The iterations is an argument used for testing the startup costs of the program
+and causes the portion of the code dedicated to creating and running the threads
+to be executed as many times as iterations.  For normal testing, iterations
+should be set to 1. 
+
+Design:
+For this code, I implemented the runnable interface, and created a constructor
+which takes the thread id, and a number of flips that thread is supposed to 
+complete as arguments.  This thread then makes its own random number generator
+and stores the number of heads it has found locally.  This number is pulled from
+the thread after that thread is joined, by keeping track of the CoinFlipper 
+object which goes into each thread, and then accessing the local variable of 
+each thread.  This ensures that there are no shared variables between threads,
+so the chance of interference is minimized.  
+
+
+Part 2: SealedDES.java
+To run this code, first compile the code with make, then execute the code with 
+java SealedDES #threads #keybits
+
+For this code, I edited the provided file, and parallelized it by making it
+implement runnable, and splitting out almost all of set up code to a constructor
+which is called for each and every thread. Some of the things included in the 
+constructor are a new encryption and decription object for each thread.  One of
+the few reused variables is the actual encryption key, which is passed as a 
+variable to each thread on startup so it can create its own encryption object, 
+as well as an encrypted version of the string it is being tested against.
