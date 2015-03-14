@@ -2,31 +2,13 @@
 //
 //    $Id: SealedDES.java,v 1.1 2008/09/10 20:21:47 randal Exp $
 //
-//    Randal C. Burns
+//    Randal C. Burns, modified by Ian Wilkes on 3/10/15
 //    Department of Computer Science
 //    Johns Hopkins University
 //
 //    $Source: /home/randal/repository/public_html/420/src/SealedDES.java,v $
 //    $Date: 2008/09/10 20:21:47 $        
 //    $Revision: 1.1 $
-//
-////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-//
-//  class: SealedDES
-//
-//  SealedDES encapsulates the DES encryption and decryption of Strings 
-//  into SealedObjects.  It represesnts keys as integers (for simplicity).
-//  
-//  The main function gives and example of how to:
-//    (1) generate a random 24 bit key by starting with a zero valued
-//          8 bytes (64 bit key) and then encoding a string with that key
-//    (2) perform a brute force search for that key and exame the 
-//          resulting output for a known portion of plaintext (in this
-//          case "Hopkins".
-//
-//  Your assignment will be to parallelize this process.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -289,15 +271,3 @@ class SealedDES implements Runnable
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-//
-//  Revsion History 
-//    
-//  $Log: SealedDES.java,v $
-//  Revision 1.1  2008/09/10 20:21:47  randal
-//  Initial checkin.
-//
-//  Revision 1.1  2008/09/05 20:31:11  randal
-//  Checkin.
-//
-////////////////////////////////////////////////////////////////////////////////

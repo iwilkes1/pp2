@@ -75,11 +75,10 @@ public class CoinFlipper implements Runnable {
 		}
 		// print results
 		long endTime = System.currentTimeMillis();
-		System.out.println((endTime - startTime) + "," + threads + "," + numIterations);
-		/* TODO add this back in 
+		//System.out.println((endTime - startTime) + "," + threads + "," + numIterations);
  		System.out.println("Heads: " + totalHeads  + 
 				"\nTime taken: " + (endTime - startTime) + "ms");
-		 */
+		
 	}
 	@Override
 	public void run() {
